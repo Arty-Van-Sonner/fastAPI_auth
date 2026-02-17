@@ -1,6 +1,8 @@
+import datetime
 from types import Annotated
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+import enum
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker, DeclarativeBase, mapped_column
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from src.config import settings
@@ -25,3 +27,22 @@ class Base(DeclarativeBase):
 
 sync_session = sessionmaker(sync_engine)
 async_session = async_sessionmaker(async_engine)
+
+class ProjectTypes(enum.Enum):
+    """
+    Docstring for ProjectTypes
+    """
+    str_64 = Annotated[str, 64]
+    str_256 = Annotated[str, 256]
+    int_pk = Annotated[int, mapped_column(primary_key=True)]
+    created_at = Annotated[
+        datetime.datetime,
+        mapped_column(server_default=text("TIMEZONE('uts', now())")) 
+    ]
+    updated_at = Annotated[
+        datetime.datetime,
+        mapped_column(
+            server_default=text("TIMEZONE('uts', now() + interval '1 day')"),
+            onupdate=datetime.datetime.now(datetime.UTC),
+        ),
+    ]

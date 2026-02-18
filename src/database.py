@@ -32,6 +32,7 @@ class ProjectTypes(enum.Enum):
     """
     Docstring for ProjectTypes
     """
+    str_32 = Annotated[str, 32]
     str_64 = Annotated[str, 64]
     str_256 = Annotated[str, 256]
     int_pk = Annotated[int, mapped_column(primary_key=True)]

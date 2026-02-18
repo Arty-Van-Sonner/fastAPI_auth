@@ -32,6 +32,7 @@ class UsersOrm(Base):
     email: Mapped[ProjectTypes.str_256]
     hashed_password: Mapped[ProjectTypes.str_256]
     role_id: Mapped[int] = mapped_column(ForeignKey('roles.id', ondelete='SET NULL'))
+    is_active: Mapped[bool]
     created_at: Mapped[ProjectTypes.created_at]
     updated_at: Mapped[ProjectTypes.updated_at]
 
